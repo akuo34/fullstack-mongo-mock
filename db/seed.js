@@ -1,5 +1,6 @@
-const Product = require('./');
+const Product = require('./index.js');
 var mongoose = require('mongoose');
+mongoose.Promise = global.Promise;
 
 // Fill in the definition of insertMockData so that when 
 // this file is run in the terminal with `node seed.js`, 
@@ -30,10 +31,16 @@ const createProducts = () => {
   return productsArr
 }
 
-const insertMockData = function() {
-  // Complete me please
+var data = createProducts();
 
-};
+const insertMockData = () => (
+  Product.create(data)
+  .then(() => console.log('seeded data'))
+  .catch( err => console.error(err))
+
+)
+
+insertMockData();
 
 // NOTE: DO NOT invoke this function as part of your
 // server code - it is meant to only be run once so that

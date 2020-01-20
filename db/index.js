@@ -6,10 +6,11 @@ var mongoUri = 'mongodb://localhost/ebidProducts';
 mongoose.Promise = global.Promise;
 
 // Connect Mongoose to our local MongoDB via URI specified above and export it below
-var db = mongoose.connect(mongoUri, {useNewUrlParser: true});
+var db = mongoose.connect(mongoUri, {useNewUrlParser: true})
+  .then(() => console.log('connected to DB'))
+  .catch( err => console.error(err))
 
 // Register the productSchema with Mongoose as the 'Product' collection.
-var Product = mongoose.model('Product', productSchema);
+const Product = mongoose.model('Product', productSchema);
 
 module.exports = Product;
-module.exports = db;
