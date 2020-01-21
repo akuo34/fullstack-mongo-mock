@@ -9,12 +9,30 @@ export default class App extends React.Component {
   constructor(props){
     super(props);
     this.state = {
+      current: {},
+      products: []
 
     }
 
   }
 
-  render(){
+  componentDidMount() {
+    this.getAllProducts();
+  }
+
+  getAllProducts() {
+    axios
+      .get('/name/products')
+      .then((response) => {
+        this.setState({
+          current: response.data[0],
+          products: response.data.slice(1)
+        })
+        console.log(this.state);
+      })
+  }
+
+  render() {
   
     return(
       <div>
@@ -29,10 +47,10 @@ export default class App extends React.Component {
         </nav>
         <div className="row main-container">
           <div className="col-md-7 product-viewer-container">
-            <ProductViewer />
+            <ProductViewer current={this.state.current}/>
           </div>
           <div className="col-md-5 product-list-container">
-            <ProductList  />
+            <ProductList items={this.state.products} />
           </div>
         </div>
       </div>
