@@ -15,6 +15,7 @@ export default class App extends React.Component {
     }
     this.clickHandler = this.clickHandler.bind(this);
     this.submitHandler = this.submitHandler.bind(this);
+    this.searchHandler = this.searchHandler.bind(this);
   }
 
   componentDidMount() {
@@ -66,8 +67,6 @@ export default class App extends React.Component {
 
     var _id = event.target.dataset.id;
     var newbid = event.target.newbid.value;
-    console.log(_id)
-    console.log(newbid);
 
     var request = { curr_bid: newbid }
 
@@ -78,6 +77,15 @@ export default class App extends React.Component {
         console.log("bid submitted")
       })
       .catch( err => console.error(err))
+
+    document.getElementById('bid').reset();
+  }
+
+  searchHandler(event) {
+    event.preventDefault();
+
+    var item = event.target.search.value;
+    console.log(item);
   }
 
   render() {
@@ -90,7 +98,7 @@ export default class App extends React.Component {
         </div>
         <nav className="navbar">
           <div className="col-md-6 offset-md-3">
-            <Search />
+            <Search searchHandler={this.searchHandler}/>
           </div>
         </nav>
         <div className="row main-container">
