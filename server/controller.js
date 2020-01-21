@@ -15,8 +15,7 @@ const controller = {
     .catch( err => res.status(400).send(err))
   },
   put: (req, res) => {
-    const {item, min_cost, curr_bid, ends_in, image} = req.body;
-    helpers.updateProductHelper(req.params._id, item, min_cost, curr_bid, ends_in, image)
+    helpers.updateProductHelper(req.params._id, req.body.curr_bid)
     .then(() => res.status(201).send("updated to database"))
     .catch( err => res.status(400).send(err))
   },

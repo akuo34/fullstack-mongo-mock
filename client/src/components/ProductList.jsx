@@ -8,6 +8,7 @@ const ProductList = (props) => {
       <Products 
         item={item} 
         key={key}
+        clickHandler={props.clickHandler}
       /> )}
     </div>
   )

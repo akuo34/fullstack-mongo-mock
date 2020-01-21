@@ -13,7 +13,8 @@ export default class App extends React.Component {
       products: []
 
     }
-
+    this.clickHandler = this.clickHandler.bind(this);
+    this.submitHandler = this.submitHandler.bind(this);
   }
 
   componentDidMount() {
@@ -24,12 +25,59 @@ export default class App extends React.Component {
     axios
       .get('/name/products')
       .then((response) => {
-        this.setState({
-          current: response.data[0],
-          products: response.data.slice(1)
-        })
-        console.log(this.state);
+        if (Object.keys(this.state.current).length === 0) {
+          this.setState({
+            current: response.data[0],
+            products: response.data
+          })
+        } else {
+          var id = this.state.current._id;
+          response.data.forEach( product => {
+            if (id === product._id) {
+              this.setState({
+                current: product,
+                products: response.data
+              })
+            }
+          })
+        }
+        
       })
+      .catch(err => console.error(err))
+  }
+
+  clickHandler(event) {
+    event.preventDefault();
+
+    var _id = event.target.dataset.item;
+    console.log(_id);
+
+    this.state.products.forEach( product => {
+      if (product._id === _id) {
+        this.setState({
+          current: product
+        })
+      }
+    })
+  }
+
+  submitHandler(event) {
+    event.preventDefault();
+
+    var _id = event.target.dataset.id;
+    var newbid = event.target.newbid.value;
+    console.log(_id)
+    console.log(newbid);
+
+    var request = { curr_bid: newbid }
+
+    axios
+      .put(`/name/products/${_id}`, request)
+      .then(() => {
+        this.getAllProducts();
+        console.log("bid submitted")
+      })
+      .catch( err => console.error(err))
   }
 
   render() {
@@ -47,10 +95,10 @@ export default class App extends React.Component {
         </nav>
         <div className="row main-container">
           <div className="col-md-7 product-viewer-container">
-            <ProductViewer current={this.state.current}/>
+            <ProductViewer current={this.state.current} submitHandler={this.submitHandler}/>
           </div>
           <div className="col-md-5 product-list-container">
-            <ProductList items={this.state.products} />
+            <ProductList clickHandler={this.clickHandler} items={this.state.products} />
           </div>
         </div>
       </div>
