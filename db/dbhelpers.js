@@ -1,4 +1,4 @@
-var Product = require('./');
+var Product = require('./index.js');
 // complete the dbhelpers
 var helpers = {
   getProductsHelper: () => Product.find(),
@@ -7,4 +7,4 @@ var helpers = {
   deleteProductHelper: (_id) => Product.findByIdAndDelete({_id})
 };
 
-module.exports = helpers
+module.exports = helpers;
